@@ -26,6 +26,8 @@ maximizationProblem.restrictions.forEach((restriction) => {
  */
 
 maximizationProblem.normalizeRestrictions();
+console.log(maximizationProblem.restrictionsNormalized[2].leftSideTerms);
+
 
 maximizationProblem.normalizeObjective();
 
