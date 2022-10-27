@@ -1,3 +1,4 @@
+import { Expression } from "../Types/Expression";
 import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
 
 /**
@@ -21,9 +22,20 @@ import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
  * 
  * */
 export function normalizeRestrictions(this: ParsedMaximizationProblem){
-    
-    //Implemente a função aqui.
-    //Utilize o campo this.restrictionsNormalized para armazenar o resultado.
-    //Utilize o campo this.restrictions para acessar as restrições do problema.
+
+    this.restrictionsNormalized = [];
+
+    this.restrictions.forEach((restriction, index) => {
+        var normalizedRestriction: Expression = restriction;
+
+        if (restriction.separator == "<=") {
+            normalizedRestriction.leftSideTerms.push({ coefficient: 1, term: "xf" + (index + 1) });
+        }
+        else if (restriction.separator == ">=") {
+            normalizedRestriction.leftSideTerms.push({ coefficient: -1, term: "xf" + (index + 1) });
+        }
+        normalizedRestriction.separator = "=";
+        this.restrictionsNormalized.push(normalizedRestriction);
+    });
 
 }
