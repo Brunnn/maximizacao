@@ -25,11 +25,12 @@ maximizationProblem.restrictions.forEach((restriction) => {
  * Cada função deve ser implementada no arquivo com seu nome. dentro da pasta Functions.
  */
 
+//Implementada
 maximizationProblem.normalizeRestrictions();
-console.log(maximizationProblem.restrictionsNormalized[2].leftSideTerms);
 
-
+//Implementada
 maximizationProblem.normalizeObjective();
+
 
 var solution = maximizationProblem.solve();
 

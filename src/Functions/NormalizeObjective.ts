@@ -19,7 +19,15 @@ import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
  *
  */
 export function normalizeObjective(this: ParsedMaximizationProblem) {
-  //Implemente a função aqui.
-  //Utilize o campo this.objective para acessar a função objetivo do problema.
-  //Utilize o campo this.objectiveNormalized para armazenar o resultado.
+    this.objectiveNormalized = {
+        leftSideTerms: [],
+        rightSideTerms: [{ coefficient: 0, term: null }],
+        separator: "="
+    };
+    this.objective?.rightSideTerms.forEach(term => {
+        this.objectiveNormalized?.leftSideTerms.push({ coefficient: -term.coefficient, term: term.term });
+    })
+    this.objective?.leftSideTerms.forEach(term => {
+        this.objectiveNormalized?.leftSideTerms.unshift({ coefficient: term.coefficient, term: term.term });
+    });
 }
