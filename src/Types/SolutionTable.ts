@@ -5,10 +5,12 @@ export type Table = {
     pivotColumn: number;
 }
 
+export type Solution = Array<{
+    term: string;
+    value: number;
+}>
+
 export type MaximizationSolution = {
     tables: Table[];
-    solution: Array<{
-        term: string;
-        value: number;
-    }>
+    solution: Solution
 }

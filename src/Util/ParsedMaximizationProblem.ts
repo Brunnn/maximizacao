@@ -22,6 +22,11 @@ export class ParsedMaximizationProblem {
     private constructor() {}
 
     public static create(problem: MaximizationProblem): ParsedMaximizationProblem {
+
+        //lowercase everything
+        problem.objective = problem.objective.toLowerCase();
+        problem.restrictions = problem.restrictions.map((restriction) => restriction.toLowerCase());
+
         const parsedProblem = new ParsedMaximizationProblem();
         parsedProblem.parseProblem(problem);
         return parsedProblem;

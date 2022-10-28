@@ -1,9 +1,10 @@
 import { MaximizationProblem } from "./Types/MaximizationProblem";
 import { ParsedMaximizationProblem } from "./Util/ParsedMaximizationProblem";
+import { PrintExpression } from "./Util/PrintExpression";
 
 var problem: MaximizationProblem = {
-  objective: "z = 100x1 + 150x2",
-  restrictions: ["2x1 + 3x2 <= 120", "x1 <= 40", "x2 <= 30"],
+	objective: "z = 10x1 + 20x2 + 30x3",
+	restrictions: ["x1 + 2x2 + 4x3 <= 300", "4x2 + 3x3 <= 200", "x1 <= 20", "4x1 + 3x2 <= 50"],
 };
 
 var maximizationProblem = ParsedMaximizationProblem.create(problem);
@@ -11,12 +12,12 @@ var maximizationProblem = ParsedMaximizationProblem.create(problem);
 //Printa Função objetivo
 console.log("=================== Função Objetivo ===================");
 
-console.log(maximizationProblem.objective);
+PrintExpression(maximizationProblem.objective);
 
 //Printa Restrições
 console.log("=================== Restrições ===================");
 maximizationProblem.restrictions.forEach((restriction) => {
-  console.log(restriction);
+	PrintExpression(restriction);
 });
 
 /** =============================================== Funções a Serem Implementadas ===============================================
@@ -31,11 +32,7 @@ maximizationProblem.normalizeRestrictions();
 //Implementada
 maximizationProblem.normalizeObjective();
 
-
 var solution = maximizationProblem.solve();
-
-
-
 
 console.log("=================== Solução ===================");
 //Exemplo de como imprimir a solução
@@ -60,22 +57,25 @@ console.log("=================== Solução ===================");
 //   }
 // );
 solution.tables.forEach((element, tableIndex) => {
-  const tablePrintableData: { [key in string]: string }[] = [];
-  console.log(`=================== Tabela ${tableIndex} ===================`);
+	const tablePrintableData: { [key in string]: string }[] = [];
+	console.log(
+		`=================== Tabela ${tableIndex + 1} ===================`
+	);
 
-  element.rows.forEach((rowData, index) => {
-    var printaBleRowData: { [key in string]: string } = {};
-    rowData.forEach((columnData, columnIndex) => {
-      printaBleRowData[element.headers[columnIndex]] = columnData.toString();
-    });
-    tablePrintableData.push(printaBleRowData);
-  });
-  console.table(tablePrintableData);
-  console.log("Linha do Pivot: " + element.pivotRow);
-  console.log("Coluna do Pivot: " + element.pivotColumn);
+	element.rows.forEach((rowData, index) => {
+		var printaBleRowData: { [key in string]: string } = {};
+		rowData.forEach((columnData, columnIndex) => {
+			printaBleRowData[element.headers[columnIndex]] =
+				columnData.toString();
+		});
+		tablePrintableData.push(printaBleRowData);
+	});
+	console.table(tablePrintableData);
+	console.log("Linha do Pivot: " + element.pivotRow);
+	console.log("Coluna do Pivot: " + element.pivotColumn);
 });
 
 console.log("=================== Solução ótima encontrada ===================");
 solution.solution.forEach((solution) => {
-  console.log(solution.term + " = " + solution.value);
+	console.log(solution.term + " = " + solution.value);
 });
