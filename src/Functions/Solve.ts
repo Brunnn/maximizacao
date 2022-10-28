@@ -1,4 +1,4 @@
-import { MaximizationSolution, Table } from "../Types/SolutionTable";
+import { MaximizationSolution, Solution, Table } from "../Types/SolutionTable";
 import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
 
 /**
@@ -71,24 +71,72 @@ function getPivot(table: Table): {  pivotRow: number, pivotColumn: number } {
 
 function solveTable(initialTable: Table): Table[]{
     var tables: Table[] = [];
-
-
+	tables.push(JSON.parse(JSON.stringify(initialTable)));
     var auxTable: Table = initialTable;
     //While there is a negative value in the objective function
-    //while(auxTable.rows[0].some((value) => value < 0)){
+    while(auxTable.rows[0].some((value) => value < 0)){
         
         let { pivotColumn, pivotRow } = getPivot(auxTable);
         auxTable.pivotRow = pivotRow;
         auxTable.pivotColumn = pivotColumn;
 
-        
+		//Multiply pivot row by 1/pivot value
+		auxTable.rows[auxTable.pivotRow] = auxTable.rows[pivotRow].map((value) => {
+			return value / auxTable.rows[pivotRow][pivotColumn];
+		});
 
-        tables.push(auxTable);
-        
+		//We need to make all other values from the pivot column 0
+		//So we multiply the pivot row by the invrsed value of the respective pivot column value from the other rows
+		var auxRow: number[] = [];
+		var multiplier: number = 0;
 
-    //}
+		auxTable.rows.forEach((row, index) => {
+			if (index == auxTable.pivotRow) return;
+
+			//Inverts the value of the pivot column from the row we need to make 0
+			multiplier = row[pivotColumn] * -1;
+
+			//We multiply the pivot row by the inverted value of the pivot column from the row we need to make 0
+			auxRow = auxTable.rows[auxTable.pivotRow].map((value) => {
+				return value * multiplier;
+			});
+
+			//We add the result of the multiplication to the row we need to make 0
+			auxTable.rows[index] = auxTable.rows[index].map((value, index) => {
+				return value + auxRow[index];
+			});
+		});
+
+		var auxTableCopy: Table = JSON.parse(JSON.stringify(auxTable));
+        tables.push(auxTableCopy);
+        
+    }
 
     return tables;
+}
+
+function getOptimalSolution(solvedTable: Table): Solution{
+	var solution: Solution = [];
+	solvedTable.headers.forEach((header, index) => {
+		//Ignore the independent term column
+		if (header == "b" || header.toLowerCase() === "z") return;
+
+		var value = 0;
+		solvedTable.rows.forEach((row, rowIndex) => {
+			//Ingnore the objective function row
+			if (rowIndex == 0) return;
+
+			if (row[index] == 1) {
+				value = row[row.length - 1];
+			}
+		});
+		
+		solution.push({ term: header, value });
+
+	});
+
+
+	return solution;
 }
 
 export function solve(this: ParsedMaximizationProblem): MaximizationSolution {
@@ -100,6 +148,8 @@ export function solve(this: ParsedMaximizationProblem): MaximizationSolution {
 	var firstTable: Table = {
 		headers: incognitas,
 		rows: [],
+		pivotRow: -1,
+		pivotColumn: -1,
 	};
 	//Mounts the first row of the table using the objective function
 	var firstRow: Array<number> = [];
@@ -137,7 +187,10 @@ export function solve(this: ParsedMaximizationProblem): MaximizationSolution {
 		firstTable.rows.push(row);
 	});
 
+
+
     var tables = solveTable(firstTable);
+	solution.solution = getOptimalSolution(tables[tables.length - 1]);
 	solution.tables = tables;
 
     

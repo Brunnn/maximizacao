@@ -3,8 +3,8 @@ import { ParsedMaximizationProblem } from "./Util/ParsedMaximizationProblem";
 import { PrintExpression } from "./Util/PrintExpression";
 
 var problem: MaximizationProblem = {
-	objective: "z = 100x1 + 150x2",
-	restrictions: ["2x1 + 3x2 <= 120", "x1 <= 40", "x2 <= 30"],
+	objective: "z = 10x1 + 20x2 + 30x3",
+	restrictions: ["x1 + 2x2 + 4x3 <= 300", "4x2 + 3x3 <= 200", "x1 <= 20", "4x1 + 3x2 <= 50"],
 };
 
 var maximizationProblem = ParsedMaximizationProblem.create(problem);
