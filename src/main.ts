@@ -3,13 +3,19 @@ import { ParsedMaximizationProblem } from "./Util/ParsedMaximizationProblem";
 import { PrintExpression } from "./Util/PrintExpression";
 
 var problem: MaximizationProblem = {
-	objective: "z = 10x1 + 20x2 + 30x3",
-	restrictions: ["x1 + 2x2 + 4x3 <= 300", "4x2 + 3x3 <= 200", "x1 <= 20", "4x1 + 3x2 <= 50"],
+	objective: "z = 2x1 + 3x2",
+	restrictions: [
+		"1x1 + 3x2 <= 9",
+		"-1x1 + 2x2 <= 4",
+		"1x1 + 1x2 <= 6"
+	],
 };
 
 var maximizationProblem = ParsedMaximizationProblem.create(problem);
+console.log(maximizationProblem.restrictionsNormalized);
 
-//Printa Função objetivo
+
+// Printa Função objetivo
 console.log("=================== Função Objetivo ===================");
 
 PrintExpression(maximizationProblem.objective);
@@ -35,27 +41,7 @@ maximizationProblem.normalizeObjective();
 var solution = maximizationProblem.solve();
 
 console.log("=================== Solução ===================");
-//Exemplo de como imprimir a solução
-// solution.tables.push({
-//     headers: ["x1", "x2", "z"],
-//     rows: [
-//         [2,5,6],
-//         [3,4,5],
-//         [4,3,4],
-//     ],
-//     pivotColumn: 0,
-//     pivotRow: 0,
-// });
-// solution.solution.push(
-//   {
-//     term: "x1",
-//     value: 2,
-//   },
-//   {
-//     term: "x2",
-//     value: 5,
-//   }
-// );
+
 solution.tables.forEach((element, tableIndex) => {
 	const tablePrintableData: { [key in string]: string }[] = [];
 	console.log(
