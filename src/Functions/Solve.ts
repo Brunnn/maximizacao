@@ -1,3 +1,4 @@
+import { table } from "console";
 import { MaximizationSolution, Solution, Table } from "../Types/SolutionTable";
 import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
 
@@ -48,27 +49,29 @@ function getPivot(table: Table): {  pivotRow: number, pivotColumn: number } {
 
     //get pivot column
 	table.headers.forEach((header, index) => {
+		
 		if (header == "b" || header == "z" || header.startsWith("xf")) return;
-
+		//Search for the lowest negative value in the objective function
 		if (table.rows[0][index] < table.rows[0][pivotColumn] )
 			pivotColumn = index;
 	});
-
+	
 
     //get pivot row
     var pivotRowValue = Number.MAX_VALUE;
-	table.headers.forEach((headers, index) => {
-		if (headers == 'b' || headers == "z" || headers.startsWith("xf"))
-			return;
 
-		var value = table.rows[index][table.rows[index].length - 1] / table.rows[index][pivotColumn];
+
+	table.rows.forEach((row, rowIndex) => {
+		//Ignore the objective function row
+		if (rowIndex == 0) return;
+
+		var value = row[row.length - 1] / row[pivotColumn];
 		if (value < pivotRowValue && value > 0) {
 			pivotRowValue = value;
-			pivotRow = index;
+			pivotRow = rowIndex;
 		}
-		
 	});
-
+	
     return {pivotRow, pivotColumn};
 }
 
@@ -90,19 +93,28 @@ function solveTable(initialTable: Table): Table[]{
     var tables: Table[] = [];
 	tables.push(JSON.parse(JSON.stringify(initialTable)));
     var auxTable: Table = initialTable;
+
     //While there is a negative value in the objective function
- 
-	var count = 0;
+
     while(stillHaveNegativeValues(auxTable)){
-		count++;
         let { pivotColumn, pivotRow } = getPivot(auxTable);
         auxTable.pivotRow = pivotRow;
         auxTable.pivotColumn = pivotColumn;
+
+		//Here we set the pivot values for the previous table
+		tables[tables.length - 1].pivotRow = pivotRow;
+		tables[tables.length - 1].pivotColumn = pivotColumn;
+
 
 		//Multiply pivot row by 1/pivot value
 		auxTable.rows[auxTable.pivotRow] = auxTable.rows[pivotRow].map((value) => {
 			return value / auxTable.rows[pivotRow][pivotColumn];
 		});
+
+
+		//We push the table with only the pivot row changed
+		tables.push(JSON.parse(JSON.stringify(auxTable)));
+
 
 		//We need to make all other values from the pivot column 0
 		//So we multiply the pivot row by the invrsed value of the respective pivot column value from the other rows
@@ -139,9 +151,6 @@ function solveTable(initialTable: Table): Table[]{
 		var auxTableCopy: Table = JSON.parse(JSON.stringify(auxTable));
     	tables.push(auxTableCopy);
 
-		// if(count == 4) 
-		// 	//@ts-ignore
-		// 	break;
     }
 
     return tables;

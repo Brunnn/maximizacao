@@ -1,6 +1,7 @@
 import { normalizeObjective } from "../Functions/NormalizeObjective";
 import { normalizeRestrictions } from "../Functions/NormalizeRestrictions";
 import { parseProblem } from "../Functions/ParseProblem";
+import { printSolution } from "../Functions/PrintSolution";
 import { solve } from "../Functions/Solve";
 import { Expression } from "../Types/Expression";
 import { MaximizationProblem } from "../Types/MaximizationProblem";
@@ -40,5 +41,7 @@ export class ParsedMaximizationProblem {
     public normalizeObjective = normalizeObjective.bind(this);
 
     public solve = solve.bind(this);
+
+    public printSolution = printSolution.bind(this);
     
 }
