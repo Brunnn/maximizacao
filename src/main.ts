@@ -42,13 +42,26 @@ import { PrintExpression } from "./Util/PrintExpression";
 // };
 
 var problem: MaximizationProblem = {
-	objective: "Z = 2x1 + 3x2",
+	objective: "Z = x1 + 2x2 + 3x3",
 	restrictions: [
-		"x1 + 3x2 <= 9",
-		"-x1 + 2x2 <= 4",
-		"x1 + x2 <= 6",
+		"x1 + x2 + x3 <= 10",
+		"2x1 + x2 + 4x3 <= 12",
+		"x1 + 3x2 - x3 <= 9",
 	],
 };
+
+/**
+ * Z = 16,11
+ */
+
+// var problem: MaximizationProblem = {
+// 	objective: "Z = 10x1 + 15x2",
+// 	restrictions: [
+// 		"2x1 + 1x2 <= 3",
+// 		"1x1 + 5x2 <= 2",
+		
+// 	],
+// };
 	
 	
 
