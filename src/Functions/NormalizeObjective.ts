@@ -1,4 +1,4 @@
-import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
+import { ParsedSimplexProblem } from "../Util/ParsedSimplexProblem";
 
 /**
  * Essa função deve popular o campo objectiveNormalized do objeto 'this'
@@ -18,7 +18,7 @@ import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
  *     };
  *
  */
-export function normalizeObjective(this: ParsedMaximizationProblem) {
+export function normalizeObjective(this: ParsedSimplexProblem) {
     this.objectiveNormalized = {
         leftSideTerms: [],
         rightSideTerms: [{ coefficient: 0, term: null }],

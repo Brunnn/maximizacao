@@ -1,6 +1,6 @@
 import { table } from "console";
 import { MaximizationSolution, Solution, Table } from "../Types/SolutionTable";
-import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
+import { ParsedSimplexProblem } from "../Util/ParsedSimplexProblem";
 
 /**
  * Aqui nessa função deve-se implementar o algoritmo de solução do problema.
@@ -14,7 +14,7 @@ import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
  * Você pode/deve criar outras funções auxiliares para implementar o algoritmo, mas não pode alterar a assinatura dessa função.
  */
 
-function getIncognitas(problem: ParsedMaximizationProblem): Array<string> {
+function getIncognitas(problem: ParsedSimplexProblem): Array<string> {
 	var incognitas: Array<string | null> = [];
 	incognitas.push(
 		...(problem.objective?.leftSideTerms.map((term) => term.term) ?? [])
@@ -180,7 +180,7 @@ function getOptimalSolution(solvedTable: Table): Solution{
 	return solution;
 }
 
-export function solve(this: ParsedMaximizationProblem): MaximizationSolution {
+export function solve(this: ParsedSimplexProblem): MaximizationSolution {
 	var solution: MaximizationSolution = { solution: [], tables: [] };
 
 	var incognitas = getIncognitas(this);

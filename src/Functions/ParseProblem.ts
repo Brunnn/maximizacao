@@ -1,6 +1,6 @@
 import { Expression, Separator, ExpressionTerm } from "../Types/Expression";
-import { MaximizationProblem } from "../Types/MaximizationProblem";
-import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
+import { SimplexProblem } from "../Types/SimplexProblem";
+import { ParsedSimplexProblem } from "../Util/ParsedSimplexProblem";
 
 //Essa função desserializa uma expressão matemática e.g. "z = 100x1 + 150x2"
 function parseExpression(expression: string): Expression {
@@ -57,8 +57,8 @@ function parseExpression(expression: string): Expression {
 }
 
 export function parseProblem(
-	this: ParsedMaximizationProblem,
-	problem: MaximizationProblem
+	this: ParsedSimplexProblem,
+	problem: SimplexProblem
 ): void {
 	this.objective = parseExpression(problem.objective);
 

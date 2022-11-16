@@ -1,9 +1,9 @@
 import { Solution } from "../Types/SolutionTable";
-import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
+import { ParsedSimplexProblem } from "../Util/ParsedSimplexProblem";
 import { PrintExpression } from "../Util/PrintExpression";
 
 export function printSolution(
-	this: ParsedMaximizationProblem,
+	this: ParsedSimplexProblem,
 	solution: Solution
 ) {
 	try {

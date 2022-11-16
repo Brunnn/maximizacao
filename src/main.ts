@@ -1,5 +1,5 @@
-import { MaximizationProblem } from "./Types/MaximizationProblem";
-import { ParsedMaximizationProblem } from "./Util/ParsedMaximizationProblem";
+import { SimplexProblem } from "./Types/SimplexProblem";
+import { ParsedSimplexProblem } from "./Util/ParsedSimplexProblem";
 import { PrintExpression } from "./Util/PrintExpression";
 
 
@@ -41,13 +41,14 @@ import { PrintExpression } from "./Util/PrintExpression";
 // 	],
 // };
 
-var problem: MaximizationProblem = {
+var problem: SimplexProblem = {
 	objective: "Z = x1 + 2x2 + 3x3",
 	restrictions: [
 		"x1 + x2 + x3 <= 10",
 		"2x1 + x2 + 4x3 <= 12",
 		"x1 + 3x2 - x3 <= 9",
 	],
+	type: "max"
 };
 
 /**
@@ -65,13 +66,10 @@ var problem: MaximizationProblem = {
 	
 	
 
-var maximizationProblem = ParsedMaximizationProblem.create(problem);
-console.log(maximizationProblem.restrictionsNormalized);
-
+var maximizationProblem = ParsedSimplexProblem.create(problem);
 
 // Printa Função objetivo
 console.log("=================== Função Objetivo ===================");
-
 PrintExpression(maximizationProblem.objective);
 
 //Printa Restrições

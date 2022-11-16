@@ -4,9 +4,11 @@ import { parseProblem } from "../Functions/ParseProblem";
 import { printSolution } from "../Functions/PrintSolution";
 import { solve } from "../Functions/Solve";
 import { Expression } from "../Types/Expression";
-import { MaximizationProblem } from "../Types/MaximizationProblem";
+import { SimplexProblem } from "../Types/SimplexProblem";
 
-export class ParsedMaximizationProblem {
+export class ParsedSimplexProblem {
+    
+
     // Função objetivo
     objective?: Expression;
 
@@ -22,13 +24,13 @@ export class ParsedMaximizationProblem {
 
     private constructor() {}
 
-    public static create(problem: MaximizationProblem): ParsedMaximizationProblem {
+    public static create(problem: SimplexProblem): ParsedSimplexProblem {
 
         //lowercase everything
         problem.objective = problem.objective.toLowerCase();
         problem.restrictions = problem.restrictions.map((restriction) => restriction.toLowerCase());
 
-        const parsedProblem = new ParsedMaximizationProblem();
+        const parsedProblem = new ParsedSimplexProblem();
         parsedProblem.parseProblem(problem);
         return parsedProblem;
     }

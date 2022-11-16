@@ -1,5 +1,5 @@
 import { Expression } from "../Types/Expression";
-import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
+import { ParsedSimplexProblem } from "../Util/ParsedSimplexProblem";
 
 /**
  * Essa função deve popular o campo restrictionsNormalized do objeto 'this'
@@ -21,7 +21,7 @@ import { ParsedMaximizationProblem } from "../Util/ParsedMaximizationProblem";
  *       ];
  * 
  * */
-export function normalizeRestrictions(this: ParsedMaximizationProblem){
+export function normalizeRestrictions(this: ParsedSimplexProblem){
 
     this.restrictionsNormalized = [];
 
