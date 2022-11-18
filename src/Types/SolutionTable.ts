@@ -10,7 +10,7 @@ export type Solution = Array<{
     value: number;
 }>
 
-export type MaximizationSolution = {
+export type SimplexSolution = {
     tables: Table[];
     solution: Solution
 }

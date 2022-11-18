@@ -9,7 +9,7 @@ export function printSolution(
 	try {
 		PrintExpression(this.objective);
 
-		var solutionString = "z = ";
+		var solutionString = this.objectiveNormalized?.leftSideTerms.find(term => term.term == "z")?.coefficient == -1 ? "-z = " : "z = ";
 		var result: number = 0;
 		this.objective?.rightSideTerms.forEach((term, index) => {
 			let termValue = solution.find(
@@ -28,7 +28,7 @@ export function printSolution(
 		});
 
 		console.log(solutionString);
-		console.log("Solução:", result.toFixed(2));
+		console.log("Solução:", Math.abs(+result.toFixed(2)));
 	} catch (e) {
 		// console.log(e);
 	}

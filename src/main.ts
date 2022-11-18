@@ -2,7 +2,6 @@ import { SimplexProblem } from "./Types/SimplexProblem";
 import { ParsedSimplexProblem } from "./Util/ParsedSimplexProblem";
 import { PrintExpression } from "./Util/PrintExpression";
 
-
 //Ok
 //xf1 = 7.32
 //x3 = 66.67
@@ -11,16 +10,16 @@ import { PrintExpression } from "./Util/PrintExpression";
 //xf2 = 0
 //x2 = 0
 //z = 2125,10
-// var problem: MaximizationProblem = {
-// 	objective: "Z = 10x1 + 20x2 + 30x3",
-// 	restrictions: [
-// 		"x1 + 2x2 + 4x3 <= 300",
-// 		"0x1 + 4x2 + 3x3 <= 200",
-// 		"1x1 + 0x2 + 0x3 <= 20",
-// 		"4x1 + 3x2 + 0x3 <= 50"
-// 	],
-// };
-
+var problem: SimplexProblem = {
+	objective: "Z = 10x1 + 20x2 + 30x3",
+	restrictions: [
+		"x1 + 2x2 + 4x3 <= 300",
+		"0x1 + 4x2 + 3x3 <= 200",
+		"1x1 + 0x2 + 0x3 <= 20",
+		"4x1 + 3x2 + 0x3 <= 50"
+	],
+	type: "max"
+};
 
 //Ok
 // var problem: MaximizationProblem = {
@@ -41,15 +40,15 @@ import { PrintExpression } from "./Util/PrintExpression";
 // 	],
 // };
 
-var problem: SimplexProblem = {
-	objective: "Z = x1 + 2x2 + 3x3",
-	restrictions: [
-		"x1 + x2 + x3 <= 10",
-		"2x1 + x2 + 4x3 <= 12",
-		"x1 + 3x2 - x3 <= 9",
-	],
-	type: "max"
-};
+// var problem: SimplexProblem = {
+// 	objective: "Z = x1 + 2x2 + 3x3",
+// 	restrictions: [
+// 		"x1 + x2 + x3 <= 10",
+// 		"2x1 + x2 + 4x3 <= 12",
+// 		"x1 + 3x2 - x3 <= 9",
+// 	],
+// 	type: "max"
+// };
 
 /**
  * Z = 16,11
@@ -60,21 +59,25 @@ var problem: SimplexProblem = {
 // 	restrictions: [
 // 		"2x1 + 1x2 <= 3",
 // 		"1x1 + 5x2 <= 2",
-		
+
 // 	],
 // };
-	
-	
 
-var maximizationProblem = ParsedSimplexProblem.create(problem);
+// var problem: SimplexProblem = {
+// 	objective: "Z = 3x1 + 2x2",
+// 	restrictions: ["2x1 + x2 >= 10", "x1 + 5x2 >= 15"],
+// 	type: "min",
+// };
+
+var simplexProblem = ParsedSimplexProblem.create(problem);
 
 // Printa Função objetivo
 console.log("=================== Função Objetivo ===================");
-PrintExpression(maximizationProblem.objective);
+PrintExpression(simplexProblem.objective);
 
 //Printa Restrições
 console.log("=================== Restrições ===================");
-maximizationProblem.restrictions.forEach((restriction) => {
+simplexProblem.restrictions.forEach((restriction) => {
 	PrintExpression(restriction);
 });
 
@@ -84,13 +87,19 @@ maximizationProblem.restrictions.forEach((restriction) => {
  * Cada função deve ser implementada no arquivo com seu nome. dentro da pasta Functions.
  */
 
-//Implementada
-maximizationProblem.normalizeRestrictions();
-
-//Implementada
-maximizationProblem.normalizeObjective();
-
-var solution = maximizationProblem.solve();
+var solution = simplexProblem.solve();
+console.log(" =================== Restrições Normalizadas ===================");
+simplexProblem.restrictionsNormalized.forEach((restriction) => {
+	PrintExpression(restriction);
+});
+if (simplexProblem.type == "min") {
+	if (simplexProblem.auxiliarObjective) {
+		console.log(
+			"=================== Função Objetivo Auxiliar ==================="
+		);
+		PrintExpression(simplexProblem.auxiliarObjective);
+	}
+}
 
 console.log("=================== Solução ===================");
 
@@ -119,5 +128,4 @@ solution.solution.forEach((solution) => {
 });
 
 console.log("=================== Valor da função objetivo ===================");
-maximizationProblem.printSolution(solution.solution);
-
+simplexProblem.printSolution(solution.solution);

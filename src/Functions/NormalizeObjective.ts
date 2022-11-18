@@ -24,10 +24,33 @@ export function normalizeObjective(this: ParsedSimplexProblem) {
         rightSideTerms: [{ coefficient: 0, term: null }],
         separator: "="
     };
-    this.objective?.rightSideTerms.forEach(term => {
-        this.objectiveNormalized?.leftSideTerms.push({ coefficient: -term.coefficient, term: term.term });
-    })
-    this.objective?.leftSideTerms.forEach(term => {
-        this.objectiveNormalized?.leftSideTerms.unshift({ coefficient: term.coefficient, term: term.term });
-    });
+
+    
+    if (this.type == "max"){
+        this.objective?.rightSideTerms.forEach(term => {
+            this.objectiveNormalized?.leftSideTerms.push({ coefficient: -term.coefficient, term: term.term });
+        })
+        this.objective?.leftSideTerms.forEach(term => {
+            this.objectiveNormalized?.leftSideTerms.unshift({ coefficient: term.coefficient, term: term.term });
+        });
+    }
+    //Minimization problem
+    else if (this.type == "min"){
+        //here we invert the signs of the terms
+        this.objective?.rightSideTerms.forEach(term => {
+            term.coefficient = -term.coefficient;
+        })
+        this.objective?.leftSideTerms.forEach(term => {
+            term.coefficient = -term.coefficient;
+        });
+
+        //Now we need to push all right side terms to the left side
+        this.objective?.rightSideTerms.forEach(term => {
+            this.objectiveNormalized?.leftSideTerms.push({ coefficient: -term.coefficient, term: term.term });
+        })
+        this.objective?.leftSideTerms.forEach(term => {
+            this.objectiveNormalized?.leftSideTerms.unshift({ coefficient: term.coefficient, term: term.term });
+        });
+
+    }
 }
